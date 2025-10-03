@@ -9,13 +9,11 @@ import fs from 'fs';
 const require = createRequire(import.meta.url);
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-// https://vitejs.dev/config/
-export default defineConfig({
-  base: '/',
+export default defineConfig(({ mode }) => ({
+  base: mode === 'production' ? '/' : '/',
   plugins: [
     react(),
     componentTagger(),
-    // Enhanced plugin to handle _redirects file
     {
       name: 'copy-redirects',
       closeBundle: async () => {
@@ -23,34 +21,20 @@ export default defineConfig({
         const source = path.join(publicDir, '_redirects');
         const dest = path.join(__dirname, 'dist', '_redirects');
         
-        // Ensure public directory exists
         if (!fs.existsSync(publicDir)) {
           await fs.promises.mkdir(publicDir, { recursive: true });
         }
         
-        // Create _redirects file if it doesn't exist
         if (!fs.existsSync(source)) {
-          try {
-            await fs.promises.writeFile(source, '/* /index.html 200');
-            console.log('Created _redirects file in public directory');
-          } catch (err) {
-            console.error('Error creating _redirects file:', err);
-            return;
-          }
+          await fs.promises.writeFile(source, '/* /index.html 200');
         }
         
-        // Copy to dist
-        try {
-          await fs.promises.copyFile(source, dest);
-          console.log('Copied _redirects file to dist directory');
-        } catch (err) {
-          console.error('Error copying _redirects file:', err);
-        }
+        await fs.promises.copyFile(source, dest);
       }
     }
   ],
   server: {
-    port: 8080,
+    port: 3000,
     strictPort: true,
     host: true,
     open: true,
@@ -62,15 +46,7 @@ export default defineConfig({
         secure: false,
         rewrite: (path) => path.replace(/^\/api/, '/api')
       }
-    },
-    fs: {
-      strict: false
     }
-  },
-  resolve: {
-    alias: {
-      '@': path.resolve(__dirname, './src'),
-    },
   },
   build: {
     outDir: 'dist',
@@ -78,16 +54,16 @@ export default defineConfig({
     emptyOutDir: true,
     rollupOptions: {
       output: {
-        manualChunks: {
-          react: ['react', 'react-dom', 'react-router-dom'],
-          mui: ['@mui/material', '@mui/icons-material', '@emotion/react', '@emotion/styled'],
-          vendor: ['axios', 'date-fns'],
-        },
-      },
-    },
+        entryFileNames: 'assets/[name].[hash].js',
+        chunkFileNames: 'assets/[name].[hash].js',
+        assetFileNames: 'assets/[name].[hash][extname]'
+      }
+    }
   },
-  publicDir: 'public',
-  optimizeDeps: {
-    include: ['react', 'react-dom', 'react-router-dom'],
-  },
-});
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, './src'),
+      '~': path.resolve(__dirname, './src')
+    }
+  }
+}));
