@@ -1,4 +1,3 @@
-
 export interface User {
   id: string;
   email: string;
@@ -14,7 +13,7 @@ export interface AuthResponse {
   error?: string;
 }
 
-const API_BASE_URL = '';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001';
 
 class AuthService {
   async signUp(email: string, password: string, username: string): Promise<AuthResponse> {
