@@ -1,4 +1,4 @@
-   import { defineConfig } from 'vite';
+import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react-swc';
 import path from 'path';
 import { componentTagger } from 'lovable-tagger';
@@ -22,13 +22,30 @@ export default defineConfig({
         const source = path.join(__dirname, 'public', '_redirects');
         const dest = path.join(__dirname, 'dist', '_redirects');
         
+        console.log('🔍 Checking for _redirects file...');
+        console.log('📁 Source path:', source);
+        console.log('📁 Destination path:', dest);
+        
         if (fs.existsSync(source)) {
           try {
+            console.log('✅ _redirects found in public folder');
             await fs.promises.copyFile(source, dest);
-            console.log('Copied _redirects file to dist directory');
+            console.log('✅ Successfully copied _redirects to dist directory');
+            
+            // Verify the copy worked
+            if (fs.existsSync(dest)) {
+              const content = await fs.promises.readFile(dest, 'utf8');
+              console.log('📄 _redirects content:', content.trim());
+              console.log('🎉 _redirects setup completed successfully!');
+            } else {
+              console.log('❌ _redirects not found in dist after copy operation');
+            }
           } catch (err) {
-            console.error('Error copying _redirects file:', err);
+            console.error('❌ Error copying _redirects file:', err);
           }
+        } else {
+          console.log('❌ _redirects file not found in public folder');
+          console.log('💡 Please create public/_redirects with: /* /index.html 200');
         }
       }
     }
