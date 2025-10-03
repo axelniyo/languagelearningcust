@@ -17,7 +17,10 @@ const pool = mysql.createPool({
   keepAliveInitialDelay: 10000,
   multipleStatements: true,
   timezone: 'local',
-  charset: 'utf8mb4'
+  charset: 'utf8mb4',
+  ssl: {
+    rejectUnauthorized: true
+  }
 });
 
 // Test the connection
