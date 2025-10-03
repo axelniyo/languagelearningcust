@@ -146,7 +146,7 @@ export function LessonView() {
   const [exerciseResponses, setExerciseResponses] = useState<Record<string, any>>({});
   const [showFeedback, setShowFeedback] = useState<Record<string, boolean>>({});
 
-  const BASE_URL = 'http://localhost:3001';
+  const BASE_URL = 'https://languagelearningcustbac.onrender.com';
 
   const handleExerciseResponse = (exerciseId: string, response: any) => {
     setExerciseResponses(prev => ({
