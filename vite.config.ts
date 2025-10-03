@@ -1,4 +1,4 @@
-import { defineConfig } from 'vite';
+   import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react-swc';
 import path from 'path';
 import { componentTagger } from 'lovable-tagger';
@@ -29,11 +29,6 @@ export default defineConfig({
           } catch (err) {
             console.error('Error copying _redirects file:', err);
           }
-        } else {
-          // Create a default _redirects file for SPA routing on Render.com
-          const redirectsContent = `/*    /index.html   200`;
-          await fs.promises.writeFile(dest, redirectsContent);
-          console.log('Created default _redirects file for SPA routing');
         }
       }
     }
