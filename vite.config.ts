@@ -9,8 +9,8 @@ import fs from 'fs';
 const require = createRequire(import.meta.url);
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-export default defineConfig(({ mode }) => ({
-  base: mode === 'production' ? '/' : '/',
+export default defineConfig({
+  base: '/',
   plugins: [
     react(),
     componentTagger(),
@@ -25,10 +25,8 @@ export default defineConfig(({ mode }) => ({
           await fs.promises.mkdir(publicDir, { recursive: true });
         }
         
-        if (!fs.existsSync(source)) {
-          await fs.promises.writeFile(source, '/* /index.html 200');
-        }
-        
+        const redirectsContent = '/* /index.html 200';
+        await fs.promises.writeFile(source, redirectsContent);
         await fs.promises.copyFile(source, dest);
       }
     }
@@ -39,14 +37,6 @@ export default defineConfig(({ mode }) => ({
     host: true,
     open: true,
     cors: true,
-    proxy: {
-      '/api': {
-        target: process.env.VITE_API_BASE_URL || 'https://languagelearningcustbac.onrender.com',
-        changeOrigin: true,
-        secure: false,
-        rewrite: (path) => path.replace(/^\/api/, '/api')
-      }
-    }
   },
   build: {
     outDir: 'dist',
@@ -54,16 +44,20 @@ export default defineConfig(({ mode }) => ({
     emptyOutDir: true,
     rollupOptions: {
       output: {
-        entryFileNames: 'assets/[name].[hash].js',
-        chunkFileNames: 'assets/[name].[hash].js',
-        assetFileNames: 'assets/[name].[hash][extname]'
-      }
-    }
+        manualChunks: {
+          react: ['react', 'react-dom', 'react-router-dom'],
+          mui: ['@mui/material', '@mui/icons-material', '@emotion/react', '@emotion/styled'],
+          vendor: ['axios', 'date-fns'],
+        },
+      },
+    },
   },
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
-      '~': path.resolve(__dirname, './src')
-    }
+    },
+  },
+  define: {
+    'process.env.VITE_API_BASE_URL': JSON.stringify('https://languagelearningcustbac.onrender.com')
   }
-}));
+});
