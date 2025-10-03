@@ -39,7 +39,7 @@ var vite_config_default = defineConfig({
     cors: true,
     proxy: {
       "/api": {
-        target: "http://localhost:3001",
+        target: "https://languagelearningcustbac.onrender.com",
         changeOrigin: true,
         secure: false,
         rewrite: (path2) => path2.replace(/^\/api/, "/api")
