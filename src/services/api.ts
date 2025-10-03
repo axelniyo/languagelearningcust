@@ -234,7 +234,7 @@ export const api = {
   async markLessonCompleted(lessonId: string, userId: string): Promise<{ success: boolean }> {
     try {
       logApiCall('/lessons/progress', { lessonId, userId });
-      const response = await fetch('http://localhost:3001/api/lessons/progress', {
+      const response = await fetch('https://languagelearningcustbac.onrender.com/api/lessons/progress', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ lessonId, userId }),
