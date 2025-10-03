@@ -15,37 +15,36 @@ export default defineConfig({
   plugins: [
     react(),
     componentTagger(),
-    // Plugin to copy _redirects file to dist
+    // Enhanced plugin to handle _redirects file
     {
       name: 'copy-redirects',
       closeBundle: async () => {
-        const source = path.join(__dirname, 'public', '_redirects');
+        const publicDir = path.join(__dirname, 'public');
+        const source = path.join(publicDir, '_redirects');
         const dest = path.join(__dirname, 'dist', '_redirects');
         
-        console.log('🔍 Checking for _redirects file...');
-        console.log('📁 Source path:', source);
-        console.log('📁 Destination path:', dest);
+        // Ensure public directory exists
+        if (!fs.existsSync(publicDir)) {
+          await fs.promises.mkdir(publicDir, { recursive: true });
+        }
         
-        if (fs.existsSync(source)) {
+        // Create _redirects file if it doesn't exist
+        if (!fs.existsSync(source)) {
           try {
-            console.log('✅ _redirects found in public folder');
-            await fs.promises.copyFile(source, dest);
-            console.log('✅ Successfully copied _redirects to dist directory');
-            
-            // Verify the copy worked
-            if (fs.existsSync(dest)) {
-              const content = await fs.promises.readFile(dest, 'utf8');
-              console.log('📄 _redirects content:', content.trim());
-              console.log('🎉 _redirects setup completed successfully!');
-            } else {
-              console.log('❌ _redirects not found in dist after copy operation');
-            }
+            await fs.promises.writeFile(source, '/* /index.html 200');
+            console.log('Created _redirects file in public directory');
           } catch (err) {
-            console.error('❌ Error copying _redirects file:', err);
+            console.error('Error creating _redirects file:', err);
+            return;
           }
-        } else {
-          console.log('❌ _redirects file not found in public folder');
-          console.log('💡 Please create public/_redirects with: /* /index.html 200');
+        }
+        
+        // Copy to dist
+        try {
+          await fs.promises.copyFile(source, dest);
+          console.log('Copied _redirects file to dist directory');
+        } catch (err) {
+          console.error('Error copying _redirects file:', err);
         }
       }
     }
