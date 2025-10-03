@@ -2,7 +2,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, Navigate, useParams } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, useParams, useNavigate } from "react-router-dom";
 import { AuthProvider } from "@/hooks/useAuth";
 import { Header } from "@/components/Header";
 import { HomePage } from "@/components/HomePage";
@@ -12,7 +12,7 @@ import { AdminDashboard } from "@/components/admin/AdminDashboard";
 import { CourseLearning } from "@/components/CourseLearning";
 import { LessonView } from "@/components/LessonView";
 import { ResetPasswordForm } from "@/components/ResetPasswordForm";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import NotFound from "./pages/NotFound";
 import LessonProgressDebugger from "@/pages/debug/LessonProgressDebugger";
 import { 
@@ -22,6 +22,7 @@ import {
   PhrasesPage, 
   UnitsPage 
 } from "./pages/SeoPage";
+import { apiGet } from './utils/api';
 
 const queryClient = new QueryClient();
 
@@ -46,6 +47,20 @@ const App = () => {
   const closeAuthModal = () => {
     setAuthModal({ ...authModal, isOpen: false });
   };
+
+  useEffect(() => {
+    // Example API call
+    const checkRoute = async () => {
+      try {
+        const data = await apiGet('/api/check-route');
+        console.log('API Response:', data);
+      } catch (error) {
+        console.error('API Error:', error);
+      }
+    }; 
+
+    checkRoute();
+  }, []);
 
   return (
     <QueryClientProvider client={queryClient}>
