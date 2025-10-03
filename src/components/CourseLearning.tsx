@@ -128,7 +128,7 @@ export function CourseLearning({ language }: CourseLearningProps) {
   // Check if API is available
   const checkApiAvailability = async () => {
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3001'}/health`);
+      const response = await fetch(`${import.meta.env.VITE_API_URL || 'https://languagelearningcustbac.onrender.com'}/health`);
       return response.ok;
     } catch (error) {
       console.error('API health check failed:', error);
@@ -247,7 +247,7 @@ export function CourseLearning({ language }: CourseLearningProps) {
           {!apiAvailable && (
             <div className="mt-6 p-4 bg-yellow-50 border-l-4 border-yellow-400">
               <p className="text-yellow-700">
-                <strong>Note:</strong> The learning service appears to be offline. Please make sure your backend server is running at {import.meta.env.VITE_API_URL || 'http://localhost:3001'}
+                <strong>Note:</strong> The learning service appears to be offline. Please make sure your backend server is running at {import.meta.env.VITE_API_URL || 'https://languagelearningcustbac.onrender.com'}
               </p>
             </div>
           )}
@@ -396,7 +396,7 @@ const loadCompletedLessons = async (courseId: string) => {
     const completedLessonsMap: Record<string, boolean> = {};
     for (const lesson of allLessons) {
       try {
-        const res = await fetch(`http://localhost:3001/lessons/progress/lesson/${lesson.id}`);
+        const res = await fetch(`https://languagelearningcustbac.onrender.com/lessons/progress/lesson/${lesson.id}`);
         if (res.ok) {
           const d = await res.json();
           if (d.completed) completedLessonsMap[lesson.id] = true;
