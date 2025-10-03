@@ -8,7 +8,7 @@ if (import.meta.env.PROD) {
 }
 
 // API service for connecting to Node.js backend with XAMPP MariaDB
-const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
+const BASE_URL = import.meta.env.VITE_API_URL || 'https://languagelearningcustbac.onrender.com/api';
 
 interface Language {
   id: string;
