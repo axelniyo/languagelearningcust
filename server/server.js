@@ -22,11 +22,10 @@ const PORT = process.env.PORT || 3001;
 
 app.use(cors({
   origin: [
-    'https://languagelearningcustfro.onrender.com',
-    'https://languagementor.site',                                             // Render subdomain
+    'https://languagementor.site',
+    'https://languagelearningcustfro.onrender.com',                                             // Render subdomain
     'https://wmicsports.com',                      // Your new custom domain
-    'http://localhost:5173',                       // Vite default
-    'http://localhost:3000',                       // Localhost
+    'http://localhost:5173',                       // Vite default                       // Localhost
     'http://localhost:8080'                        // Vite dev server port
   ],
   credentials: true,
