@@ -1,13 +1,7 @@
-   import { defineConfig } from 'vite';
+import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react-swc';
 import path from 'path';
 import { componentTagger } from 'lovable-tagger';
-import { createRequire } from 'module';
-import { fileURLToPath } from 'url';
-import fs from 'fs';
-
-const require = createRequire(import.meta.url);
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -15,23 +9,7 @@ export default defineConfig({
   plugins: [
     react(),
     componentTagger(),
-    // Plugin to copy _redirects file to dist
-    {
-      name: 'copy-redirects',
-      closeBundle: async () => {
-        const source = path.join(__dirname, 'public', '_redirects');
-        const dest = path.join(__dirname, 'dist', '_redirects');
-        
-        if (fs.existsSync(source)) {
-          try {
-            await fs.promises.copyFile(source, dest);
-            console.log('Copied _redirects file to dist directory');
-          } catch (err) {
-            console.error('Error copying _redirects file:', err);
-          }
-        }
-      }
-    }
+    // REMOVED the custom copy-redirects plugin - Vite handles this automatically
   ],
   server: {
     port: 8080,
