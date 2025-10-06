@@ -101,11 +101,7 @@ const shuffleArray = <T,>(array: T[]): T[] => {
 // Function to get language-specific wrong options
 const getLanguageSpecificWrongOptions = (language: string, excludeText: string, count: number = 3): string[] => {
   const languageOptions: Record<string, string[]> = {
-    'spanish': [
-      'Hola', 'Adiós', 'Por favor', 'De nada', 'Lo siento', 'Buenos días', 
-      'Buenas tardes', 'Buenas noches', 'Gracias', 'Perdón', '¿Cómo estás?',
-      'Mucho gusto', 'Hasta luego', '¿Qué tal?', 'Bien', 'Mal', 'Regular'
-    ],
+  
     'german': [
       'Hallo', 'Auf Wiedersehen', 'Bitte', 'Danke', 'Entschuldigung', 'Guten Morgen',
       'Guten Tag', 'Guten Abend', 'Gute Nacht', 'Ja', 'Nein', 'Vielleicht',
