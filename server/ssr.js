@@ -125,7 +125,7 @@ app.get('*', async (req, res, next) => {
         
         // Get the title and meta tags from the rendered app
         // This would be set by the Seo component during render
-        const title = context.title || 'Language Learning Platform';
+        const title = context.title || 'Language Mentor';
         const metaDescription = context.metaDescription || 'Learn new languages with our interactive platform';
         
         // Inject the rendered app and SEO metadata into our HTML
