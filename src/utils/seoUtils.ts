@@ -20,7 +20,7 @@ export const generateSeoConfig = (
   pageType: string, 
   params: SeoConfigParams = {}
 ): SeoProps => {
-  const siteName = 'Language Learning Platform';
+  const siteName = 'Language Mentor';
   const siteUrl = import.meta.env.VITE_APP_SITE_URL || 'http://localhost:8080';
   const defaultImage = `${siteUrl}/images/og-default.jpg`;
   
