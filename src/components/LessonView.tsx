@@ -116,6 +116,25 @@ const getLanguageSpecificWrongOptions = (language: string, excludeText: string, 
       'Bonsoir', 'De rien', 'Pardon', 'Comment ça va?', 'Enchanté', 'À bientôt',
       'Ça va?', 'Bien', 'Mal', 'Comme ci comme ça', 'Comment vous appelez-vous?'
     ],
+  'japanese': [
+  'こんにちは', // Konnichiwa - Hello / Good afternoon
+  'さようなら', // Sayōnara - Goodbye
+  'お願いします', // Onegai shimasu - Please
+  'ありがとう', // Arigatō - Thank you
+  'ごめんなさい', // Gomen nasai - Sorry
+  'おはようございます', // Ohayō gozaimasu - Good morning
+  'こんばんは', // Konbanwa - Good evening
+  'おやすみなさい', // Oyasuminasai - Good night
+  'はい', // Hai - Yes
+  'いいえ', // Iie - No
+  'たぶん', // Tabun - Maybe
+  'お元気ですか？', // Ogenki desu ka? - How are you?
+  'はじめまして', // Hajimemashite - Nice to meet you
+  'またね', // Matane - See you later
+  '大丈夫', // Daijōbu - Okay / All right
+  'もちろん', // Mochiron - Of course
+  'どういたしまして' // Dō itashimashite - You’re welcome
+],
     'english': [
       'Hello', 'Goodbye', 'Please', 'Thank you', 'Sorry', 'Good morning',
       'Good afternoon', 'Good evening', 'Good night', 'Yes', 'No', 'Maybe',
