@@ -22,7 +22,7 @@ export interface SeoProps {
 }
 
 export const Seo = ({
-  title = 'Language Learning Platform',
+  title = 'Language Mentor',
   description = 'Learn new languages through interactive courses, exercises, and lessons.',
   keywords = ['language learning', 'online courses', 'language exercises'],
   image = '/images/og-image.jpg',
