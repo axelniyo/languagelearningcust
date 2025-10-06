@@ -101,7 +101,16 @@ const shuffleArray = <T,>(array: T[]): T[] => {
 // Function to get language-specific wrong options
 const getLanguageSpecificWrongOptions = (language: string, excludeText: string, count: number = 3): string[] => {
   const languageOptions: Record<string, string[]> = {
-  
+    'spanish': [
+      'Hola', 'Adiós', 'Por favor', 'De nada', 'Lo siento', 'Buenos días', 
+      'Buenas tardes', 'Buenas noches', 'Gracias', 'Perdón', '¿Cómo estás?',
+      'Mucho gusto', 'Hasta luego', '¿Qué tal?', 'Bien', 'Mal', 'Regular'
+    ],
+    'japanese': [
+      'こんにちは', 'さようなら', 'お願いします', 'ありがとう', 'すみません', 'おはようございます',
+      'こんばんは', 'おやすみなさい', 'はい', 'いいえ', 'お元気ですか', 'はじめまして',
+      'またね', '大丈夫です', 'もちろん', 'すごい', '分かりません'
+    ],
     'german': [
       'Hallo', 'Auf Wiedersehen', 'Bitte', 'Danke', 'Entschuldigung', 'Guten Morgen',
       'Guten Tag', 'Guten Abend', 'Gute Nacht', 'Ja', 'Nein', 'Vielleicht',
@@ -112,25 +121,6 @@ const getLanguageSpecificWrongOptions = (language: string, excludeText: string, 
       'Bonsoir', 'De rien', 'Pardon', 'Comment ça va?', 'Enchanté', 'À bientôt',
       'Ça va?', 'Bien', 'Mal', 'Comme ci comme ça', 'Comment vous appelez-vous?'
     ],
-  'japanese': [
-  'こんにちは', // Konnichiwa - Hello / Good afternoon
-  'さようなら', // Sayōnara - Goodbye
-  'お願いします', // Onegai shimasu - Please
-  'ありがとう', // Arigatō - Thank you
-  'ごめんなさい', // Gomen nasai - Sorry
-  'おはようございます', // Ohayō gozaimasu - Good morning
-  'こんばんは', // Konbanwa - Good evening
-  'おやすみなさい', // Oyasuminasai - Good night
-  'はい', // Hai - Yes
-  'いいえ', // Iie - No
-  'たぶん', // Tabun - Maybe
-  'お元気ですか？', // Ogenki desu ka? - How are you?
-  'はじめまして', // Hajimemashite - Nice to meet you
-  'またね', // Matane - See you later
-  '大丈夫', // Daijōbu - Okay / All right
-  'もちろん', // Mochiron - Of course
-  'どういたしまして' // Dō itashimashite - You’re welcome
-],
     'english': [
       'Hello', 'Goodbye', 'Please', 'Thank you', 'Sorry', 'Good morning',
       'Good afternoon', 'Good evening', 'Good night', 'Yes', 'No', 'Maybe',
@@ -138,14 +128,18 @@ const getLanguageSpecificWrongOptions = (language: string, excludeText: string, 
     ]
   };
 
-  const options = languageOptions[language.toLowerCase()] || languageOptions.english;
+  // Convert language to lowercase and handle variations
+  const langKey = language.toLowerCase();
+  const options = languageOptions[langKey] || languageOptions.english;
+  
+  // Filter out the correct answer and empty options, then shuffle and select the requested number
   const filteredOptions = options.filter(option => 
     option && option !== excludeText && option.length > 0
   );
   
   return shuffleArray(filteredOptions).slice(0, count);
 };
-
+  
 export function LessonView() {
   const { lessonId } = useParams<{ lessonId: string }>();
   const { user } = useAuth();
