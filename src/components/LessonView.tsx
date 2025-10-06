@@ -213,16 +213,19 @@ export function LessonView() {
               
               if (filteredData.length > 0) {
                 // Detect language from URL
-                let language = 'spanish'; // default
-                const path = location.pathname;
-                if (path.includes('/german') || path.includes('/german-lesson')) {
-                  language = 'german';
-                } else if (path.includes('/french') || path.includes('/french-lesson')) {
-                  language = 'french';
-                } else if (path.includes('/spanish') || path.includes('/spanish-lesson')) {
-                  language = 'spanish';
-                }
+// Update the language detection to include Japanese
+let language = 'english'; // default
+const path = location.pathname.toLowerCase();
 
+if (path.includes('japanese') || path.includes('japan') || path.includes('jp') || path.includes('日本語')) {
+  language = 'japanese';
+} else if (path.includes('german') || path.includes('deutsch') || path.includes('de')) {
+  language = 'german';
+} else if (path.includes('french') || path.includes('français') || path.includes('fr')) {
+  language = 'french';
+} else if (path.includes('spanish') || path.includes('español') || path.includes('es')) {
+  language = 'spanish';
+}
                 // Convert API exercises to interactive exercise format
                 const convertedExercises = filteredData.map((item: any, index: number) => {
                   const question = extractString(item.question);
