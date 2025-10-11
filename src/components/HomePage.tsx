@@ -47,27 +47,44 @@ export function HomePage({ openAuthModal }: HomePageProps) {
     canonicalUrl: import.meta.env.VITE_APP_SITE_URL || 'http://localhost:8080'
   });
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setLoading(true);
-        
-        // Fetch courses
-        const coursesData = await api.getCourses();
-        setCourses(coursesData);
-        
-        // Fetch languages
-        const languagesData = await api.getLanguages();
-        setLanguages(languagesData);
-        
-      } catch (err) {
-        console.error('Error loading data:', err);
-        setError('Failed to load data. Please try again later.');
-      } finally {
-        setLoading(false);
+  // Retry function for API calls
+  const fetchWithRetry = async (apiCall: () => Promise<any>, retryCount = 0): Promise<any> => {
+    try {
+      return await apiCall();
+    } catch (err) {
+      if (retryCount < 3) {
+        console.log(`API call failed, retrying... (${retryCount + 1}/3)`);
+        const delay = 1000 * Math.pow(2, retryCount); // 1s, 2s, 4s
+        await new Promise(resolve => setTimeout(resolve, delay));
+        return fetchWithRetry(apiCall, retryCount + 1);
       }
-    };
-    
+      throw err;
+    }
+  };
+
+  const fetchData = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      
+      // Use retry wrapper for both API calls
+      const [coursesData, languagesData] = await Promise.all([
+        fetchWithRetry(() => api.getCourses()),
+        fetchWithRetry(() => api.getLanguages())
+      ]);
+      
+      setCourses(coursesData);
+      setLanguages(languagesData);
+      
+    } catch (err) {
+      console.error('Error loading data:', err);
+      setError('Failed to load data. Please try again later.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
     fetchData();
     // load stored preferred language if there is any
     translationService.loadStoredLanguage();
@@ -133,7 +150,11 @@ export function HomePage({ openAuthModal }: HomePageProps) {
         <div className="py-10">
           <h1 className="text-2xl font-bold mb-4">Something went wrong</h1>
           <p className="text-red-500 mb-6">{error}</p>
-          <Button onClick={() => window.location.reload()}>Try Again</Button>
+          <Button onClick={() => {
+            setError(null);
+            setLoading(true);
+            fetchData();
+          }}>Try Again</Button>
         </div>
       </div>
     );
