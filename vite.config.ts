@@ -53,22 +53,26 @@ export default defineConfig({
     },
   },
   build: {
-  outDir: 'dist',
-  assetsDir: 'assets',
-  emptyOutDir: true,
-  rollupOptions: {
-    output: {
-      entryFileNames: `assets/[name].js`,
-      chunkFileNames: `assets/[name].js`,
-      assetFileNames: `assets/[name].[ext]`,
-      manualChunks: {
-        react: ['react', 'react-dom', 'react-router-dom'],
-        mui: ['@mui/material', '@mui/icons-material', '@emotion/react', '@emotion/styled'],
-        vendor: ['axios', 'date-fns'],
+    outDir: 'dist',
+    assetsDir: 'assets',
+    emptyOutDir: true,
+    // ADDED: Explicitly force using root index.html
+    rollupOptions: {
+      input: {
+        main: path.resolve(__dirname, 'index.html') // Force root index.html
+      },
+      output: {
+        entryFileNames: `assets/[name].js`,
+        chunkFileNames: `assets/[name].js`,
+        assetFileNames: `assets/[name].[ext]`,
+        manualChunks: {
+          react: ['react', 'react-dom', 'react-router-dom'],
+          mui: ['@mui/material', '@mui/icons-material', '@emotion/react', '@emotion/styled'],
+          vendor: ['axios', 'date-fns'],
+        },
       },
     },
   },
-},
   publicDir: 'public',
   optimizeDeps: {
     include: ['react', 'react-dom', 'react-router-dom'],

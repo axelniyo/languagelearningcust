@@ -8,7 +8,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const routes = [
-  '/',
+  // REMOVED: '/' - don't overwrite the main index.html built by Vite
   '/learn/japanese',
   '/japanese-lesson/2049',
   '/learn/german', 
@@ -32,14 +32,9 @@ async function prerender() {
       
       const html = await response.text();
       
-      // Create directory structure
-      let filePath;
-      if (route === '/') {
-        filePath = path.join(__dirname, 'dist', 'index.html');
-      } else {
-        filePath = path.join(__dirname, 'dist', route, 'index.html');
-        fs.mkdirSync(path.dirname(filePath), { recursive: true });
-      }
+      // Create directory structure for route-specific pages
+      const filePath = path.join(__dirname, 'dist', route, 'index.html');
+      fs.mkdirSync(path.dirname(filePath), { recursive: true });
       
       fs.writeFileSync(filePath, html);
       console.log(`✅ Generated: ${filePath}`);
